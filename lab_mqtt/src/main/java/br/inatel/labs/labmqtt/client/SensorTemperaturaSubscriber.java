@@ -9,26 +9,22 @@ import java.util.UUID;
 
 public class SensorTemperaturaSubscriber {
     public static void main(String[] args) throws MqttException {
-        // Cria o subscriber
+
         String subsciberId = UUID.randomUUID().toString();
         IMqttClient subscriber = new MqttClient(MyConstants.URI_BROKER, subsciberId);
 
-        // Conecta
         MqttConnectOptions options = new MqttConnectOptions();
         options.setAutomaticReconnect(true);
         options.setCleanSession(true);
         options.setConnectionTimeout(10);
         subscriber.connect(options);
 
-        // Recebe a mensagem
-        subscriber.subscribe(MyConstants.TOPIC_1,
-                (topic, msg) -> {
-                    byte[] payload = msg.getPayload();
-                    System.out.println("Payload recebido: " + payload);
-                    System.out.println("Topico recebido: " + topic);
-                });
+        subscriber.subscribe(MyConstants.TOPIC_1, (topic, msg) -> {
+            byte[] payload = msg.getPayload();
+            System.out.println("Payload recebido: " + payload);
+            System.out.println("Topico recebido: " + topic);
+        });
 
-        // Desconecta
         subscriber.disconnect();
     }
 }
